@@ -1,9 +1,14 @@
-const gulp = require('gulp');
-const svgSprite = require('gulp-svg-sprite');
-const rename = require('gulp-rename');
-const del = require('del');
+var gulp = require('gulp'),
+svgSprite = require('gulp-svg-sprite'),
+rename = require('gulp-rename'),
+del = require('del');
 
-const config = {
+var config = {
+  shape: {
+    spacing: {
+      padding: 1
+    }
+  },
   mode: {
     css: {
       sprite: 'sprite.svg',
@@ -14,7 +19,7 @@ const config = {
       }
     }
   }
-};
+}
 
 gulp.task('beginClean', function() {
   return del(['./app/temp/sprite', './app/assets/images/sprites']);
@@ -34,11 +39,11 @@ gulp.task('copySpriteGraphic', ['createSprite'], function() {
 gulp.task('copySpriteCSS', ['createSprite'], function() {
   return gulp.src('./app/temp/sprite/css/*.css')
     .pipe(rename('_sprite.css'))
-    .pipe(gulp.dest('./app/assets/styles/modules/'));
+    .pipe(gulp.dest('./app/assets/styles/modules'));
 });
 
 gulp.task('endClean', ['copySpriteGraphic', 'copySpriteCSS'], function() {
   return del('./app/temp/sprite');
-})
+});
 
 gulp.task('icons', ['beginClean', 'createSprite', 'copySpriteGraphic', 'copySpriteCSS', 'endClean']);
